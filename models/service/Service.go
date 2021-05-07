@@ -7,6 +7,6 @@ import (
 
 func NewService(router *routers.Routers) *gin.Engine {
 	service := gin.Default()
-	router.RouteRegister(service)
+	router.Register(service)
 	return service
 }

@@ -2,17 +2,17 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	routers "github.com/ocsen-hoc-code/go-auj/routers/HelloRouter"
+	helloroute "github.com/ocsen-hoc-code/go-auj/routers/HelloRouter"
 )
 
 type Routers struct {
-	helloRoute *routers.HelloRouter
+	helloRoute *helloroute.HelloRouter
 }
 
-func NewRouters(helloRoute *routers.HelloRouter) *Routers {
+func NewRouters(helloRoute *helloroute.HelloRouter) *Routers {
 	return &Routers{helloRoute: helloRoute}
 }
 
-func (r *Routers) RouteRegister(route *gin.Engine) {
+func (r *Routers) Register(route *gin.Engine) {
 	r.helloRoute.RouteRegister(route)
 }
