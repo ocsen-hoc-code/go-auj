@@ -14,5 +14,5 @@ func NewHelloController() *HelloController {
 }
 
 func (ctrl HelloController) Index(c *gin.Context) {
-	c.JSON(http.StatusOK, gin.H{"message": "GIN Hello world"})
+	c.JSON(http.StatusOK, gin.H{"message": "Welcome to GIN"})
 }
