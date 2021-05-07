@@ -2,19 +2,16 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	helloroute "github.com/ocsen-hoc-code/go-auj/routers/HelloRouter"
+	"github.com/ocsen-hoc-code/go-auj/interfaces"
+	helloroute "github.com/ocsen-hoc-code/go-auj/routers/hellorouter"
 )
 
-type IRouter interface {
-	RouteRegister(route *gin.Engine)
-}
-
 type Routers struct {
-	routes []IRouter
+	routes []interfaces.IRoute
 }
 
 func NewRouters(helloRoute *helloroute.HelloRouter) *Routers {
-	return &Routers{routes: []IRouter{helloRoute}}
+	return &Routers{routes: []interfaces.IRoute{helloRoute}}
 }
 
 func (r *Routers) Register(route *gin.Engine) {
