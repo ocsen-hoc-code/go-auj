@@ -6,13 +6,13 @@ import (
 )
 
 type HelloRouter struct {
-	helloCrtl *controllers.HelloController
+	crtl *controllers.HelloController
 }
 
-func NewHelloRouter(helloCrtl *controllers.HelloController) *HelloRouter {
-	return &HelloRouter{helloCrtl: helloCrtl}
+func NewHelloRouter(crtl *controllers.HelloController) *HelloRouter {
+	return &HelloRouter{crtl: crtl}
 }
 
 func (r *HelloRouter) RouteRegister(route *gin.Engine) {
-	route.GET("/", r.helloCrtl.Index)
+	route.GET("/", r.crtl.Index)
 }

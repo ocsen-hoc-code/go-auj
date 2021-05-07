@@ -5,14 +5,18 @@ import (
 	helloroute "github.com/ocsen-hoc-code/go-auj/routers/HelloRouter"
 )
 
+type IRouter interface {
+	RouteRegister(route *gin.Engine)
+}
+
 type Routers struct {
-	helloRoute *helloroute.HelloRouter
+	routes []IRouter
 }
 
 func NewRouters(helloRoute *helloroute.HelloRouter) *Routers {
-	return &Routers{helloRoute: helloRoute}
+	return &Routers{routes: []IRouter{helloRoute}}
 }
 
 func (r *Routers) Register(route *gin.Engine) {
-	r.helloRoute.RouteRegister(route)
+	r.routes[0].RouteRegister(route)
 }
