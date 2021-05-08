@@ -22,7 +22,7 @@ func SetupServer(serv service.Service) service.Service {
 func main() {
 	err := godotenv.Load(".env")
 	if err != nil {
-		log.Fatal("Error loading .env file")
+		log.Println("Can't loading .env file")
 	}
 	port, err := strconv.Atoi(os.Getenv("DB_PORT"))
 	if nil != err {
