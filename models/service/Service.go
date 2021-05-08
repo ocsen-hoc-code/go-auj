@@ -12,7 +12,7 @@ import (
 type Service struct {
 	Port   int
 	Server *gin.Engine
-	Config config.DbConfig
+	Config *config.DbConfig
 }
 
 var once sync.Once

@@ -3,6 +3,7 @@ package builder
 import (
 	"github.com/ocsen-hoc-code/go-auj/controllers/hello2controller"
 	"github.com/ocsen-hoc-code/go-auj/controllers/hellocontroller"
+	"github.com/ocsen-hoc-code/go-auj/models/config"
 	"github.com/ocsen-hoc-code/go-auj/models/service"
 	hello2route "github.com/ocsen-hoc-code/go-auj/routers/hello2router"
 	helloroute "github.com/ocsen-hoc-code/go-auj/routers/hellorouter"
@@ -14,6 +15,8 @@ import (
 func BuildContainer() *dig.Container {
 	container := dig.New()
 
+	//Regist database config
+	container.Provide(config.GetDbConfg)
 	//Register controllers
 	container.Provide(hellocontroller.NewHelloController)
 	container.Provide(hello2controller.NewHello2Controller)
