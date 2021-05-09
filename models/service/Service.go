@@ -10,9 +10,10 @@ import (
 )
 
 type Service struct {
-	Port   int
-	Server *gin.Engine
-	Config *config.DbConfig
+	Port      int
+	Server    *gin.Engine
+	Config    *config.DbConfig
+	SecretKey *config.JWTConfig
 }
 
 var once sync.Once

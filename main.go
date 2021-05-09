@@ -20,7 +20,7 @@ func SetupServer(serv service.Service) service.Service {
 }
 
 func main() {
-	err := godotenv.Load(".env")
+	err := godotenv.Load(".env.local")
 	if err != nil {
 		log.Println("Can't loading .env file")
 	}
@@ -28,10 +28,15 @@ func main() {
 	if nil != err {
 		port = 5432
 	}
+	expireTime, err := strconv.Atoi(os.Getenv("TOKEN_EXPIRED_TIME"))
+	if nil != err {
+		expireTime = 900
+	}
 	serv := SetupServer(
 		service.Service{
-			Server: gin.Default(),
-			Port:   8888,
+			Server:    gin.Default(),
+			Port:      8888,
+			SecretKey: config.NewJWTConfig(&config.JWTConfig{SecretKey: "Minh dep trai", ExpireTime: expireTime}),
 			Config: config.NewDbConfig(&config.DbConfig{
 				Hostname:   os.Getenv("DB_HOST"),
 				UserName:   os.Getenv("DB_USERNAME"),
