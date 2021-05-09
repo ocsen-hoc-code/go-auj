@@ -81,18 +81,18 @@ func TestTask(t *testing.T) {
 		assert.Equal(t, content, tasks[0].Content, "Expect "+content)
 	})
 
-	// t.Run("TestGetTaskWithCreatedTime", func(t *testing.T) {
-	// 	token := getToken(serv.Server)
-	// 	content := "Minh Dep Trai"
-	// 	status, body := util_test.CreateRequest(serv.Server, util_test.GET, "/tasks", token, nil)
-	// 	var tasks []task.Task
-	// 	dataByte, _ := json.Marshal(body["data"])
-	// 	json.Unmarshal(dataByte, &tasks)
-	// 	assert.Equal(t, 200, status, "Expect 200")
+	t.Run("TestGetTaskWithCreatedTime", func(t *testing.T) {
+		token := getToken(serv.Server)
+		content := "Minh Dep Trai"
+		status, body := util_test.CreateRequest(serv.Server, util_test.GET, "/tasks", token, nil)
+		var tasks []task.Task
+		dataByte, _ := json.Marshal(body["data"])
+		json.Unmarshal(dataByte, &tasks)
+		assert.Equal(t, 200, status, "Expect 200")
 
-	// 	assert.Equal(t, util_test.USERID, tasks[0].UserID, "Expect "+util_test.USERID)
-	// 	assert.Equal(t, content, tasks[0].Content, "Expect "+content)
-	// })
+		assert.Equal(t, util_test.USERID, tasks[0].UserID, "Expect "+util_test.USERID)
+		assert.Equal(t, content, tasks[0].Content, "Expect "+content)
+	})
 
 	t.Run("TestGetTaskWithTokenExpired", func(t *testing.T) {
 		status, body := util_test.CreateRequest(serv.Server, util_test.GET, "/tasks", util_test.OLD_JWT, nil)
