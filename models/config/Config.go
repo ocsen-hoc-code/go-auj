@@ -18,6 +18,7 @@ type DbConfig struct {
 	Drivername string
 	Sslmodel   bool
 	Database   *sql.DB
+	TestEnv    bool
 }
 
 type JWTConfig struct {
@@ -63,7 +64,15 @@ func (db *DbConfig) CreateDatabase() error {
 func NewDbConfig(db *DbConfig) *DbConfig {
 	once.Do(func() {
 		dbInfo := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", db.Hostname, db.Port, db.UserName, db.Password, db.DbName)
-		sqlDB, err := sql.Open(db.Drivername, dbInfo)
+		var sqlDB *sql.DB
+		var err error
+
+		if db.TestEnv {
+			sqlDB, err = sql.Open("sqlite3", ":memory:")
+		} else {
+			sqlDB, err = sql.Open(db.Drivername, dbInfo)
+		}
+
 		if err != nil {
 			panic(err)
 		}

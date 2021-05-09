@@ -39,6 +39,7 @@ func (ctrl *TaskController) Create(c *gin.Context) {
 }
 
 func (ctrl *TaskController) View(c *gin.Context) {
+	
 	taskFilter := &task.TaskFilter{}
 	if err := c.ShouldBindQuery(&taskFilter); nil != err {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
