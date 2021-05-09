@@ -52,22 +52,22 @@ func TestTask(t *testing.T) {
 		assert.Equal(t, "Token is invalid!", body["message"], "Expect Message: Token is invalid!")
 	})
 
-	// t.Run("TestPostTaskLimit", func(t *testing.T) {
-	// 	token := getToken(serv.Server)
-	// 	content := "Minh Dep Trai"
-	// 	for i := 0; i < 5; i++ {
-	// 		status, task := PostTask(serv.Server, content, token)
-	// 		assert.Equal(t, 201, status, "Expect 201")
-	// 		assert.Equal(t, util_test.USERID, task.UserID, "Expect "+util_test.USERID)
-	// 		assert.Equal(t, content, task.Content, "Expect "+content)
-	// 	}
-	// 	msgError := "Users are limited to create only 5 task only per day!"
-	// 	values := map[string]string{"content": content}
-	// 	jsonData, _ := json.Marshal(values)
-	// 	status, body := util_test.CreateRequest(serv.Server, util_test.POST, "/tasks", token, jsonData)
-	// 	assert.Equal(t, 400, status, "Expect 400")
-	// 	assert.Equal(t, msgError, body["error"], "Expect error: "+msgError)
-	// })
+	t.Run("TestPostTaskLimit", func(t *testing.T) {
+		token := getToken(serv.Server)
+		content := "Minh Dep Trai"
+		for i := 0; i < 4; i++ {
+			status, task := PostTask(serv.Server, content, token)
+			assert.Equal(t, 201, status, "Expect 201")
+			assert.Equal(t, util_test.USERID, task.UserID, "Expect "+util_test.USERID)
+			assert.Equal(t, content, task.Content, "Expect "+content)
+		}
+		msgError := "Users are limited to create only 5 task only per day!"
+		values := map[string]string{"content": content}
+		jsonData, _ := json.Marshal(values)
+		status, body := util_test.CreateRequest(serv.Server, util_test.POST, "/tasks", token, jsonData)
+		assert.Equal(t, 400, status, "Expect 400")
+		assert.Equal(t, msgError, body["error"], "Expect error: "+msgError)
+	})
 
 	t.Run("TestGetTask", func(t *testing.T) {
 		token := getToken(serv.Server)
@@ -77,6 +77,19 @@ func TestTask(t *testing.T) {
 		dataByte, _ := json.Marshal(body["data"])
 		json.Unmarshal(dataByte, &tasks)
 		assert.Equal(t, 200, status, "Expect 200")
+		assert.Equal(t, util_test.USERID, tasks[0].UserID, "Expect "+util_test.USERID)
+		assert.Equal(t, content, tasks[0].Content, "Expect "+content)
+	})
+
+	t.Run("TestGetTaskWithoutCreatedTime", func(t *testing.T) {
+		token := getToken(serv.Server)
+		content := "Minh Dep Trai"
+		status, body := util_test.CreateRequest(serv.Server, util_test.GET, "/tasks", token, nil)
+		var tasks []task.Task
+		dataByte, _ := json.Marshal(body["data"])
+		json.Unmarshal(dataByte, &tasks)
+		assert.Equal(t, 200, status, "Expect 200")
+
 		assert.Equal(t, util_test.USERID, tasks[0].UserID, "Expect "+util_test.USERID)
 		assert.Equal(t, content, tasks[0].Content, "Expect "+content)
 	})

@@ -22,12 +22,13 @@ func (rp TaskRepository) FindTasks(ctx context.Context, userID sql.NullString, c
 
 	var rows *sql.Rows
 	var err error
-	stmt := `SELECT id, content, user_id, created_date FROM tasks WHERE user_id = $1 AND DATE(created_date) = $2`
+	stmt := `SELECT id, content, user_id, created_date FROM tasks WHERE user_id = $1 AND created_date = $2`
 	if createdDate.IsZero() {
 		stmt = `SELECT id, content, user_id, created_date FROM tasks WHERE user_id = $1`
 		rows, err = rp.dbConfig.Database.QueryContext(ctx, stmt, userID)
 	} else {
-		rows, err = rp.dbConfig.Database.QueryContext(ctx, stmt, userID, createdDate.Format("2006-01-02"))
+		rows, err = rp.dbConfig.Database.QueryContext(ctx, stmt, userID,
+			createdDate.Format("2006-01-02"))
 	}
 
 	if err != nil {
@@ -64,9 +65,9 @@ func (rp TaskRepository) CreateTask(ctx context.Context, t *task.Task) error {
 }
 
 // ValidateTask returns boolend And max_todo if match userId AND date
-func (rp TaskRepository) ValidateTask(ctx context.Context, userID string, now time.Time) (bool, int) {
-	stmt := `SELECT count(id) FROM tasks WHERE user_id = $1 AND created_date = $2`
-	row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID, now.Format("2006-01-02"))
+func (rp TaskRepository) ValidateTask(ctx context.Context, userID string, createdDate time.Time) (bool, int) {
+	stmt := `SELECT count(id) FROM tasks WHERE user_id = $1 AND created_date > $2`
+	row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID, createdDate.AddDate(0, 0, -1).Format("2006-01-02"))
 	// stmt := `SELECT count(id) FROM tasks WHERE user_id = $1`
 	// row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID)
 	limitTask := 0
