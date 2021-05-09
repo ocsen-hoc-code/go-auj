@@ -17,18 +17,18 @@ type Service struct {
 }
 
 var once sync.Once
-var serv Service
+var serv *Service
 
-func NewService(info Service) *Service {
+func NewService(info *Service) *Service {
 	serv = info
-	return &serv
+	return serv
 }
 
 func GetService(router *routers.Routers) *Service {
 	once.Do(func() {
 		router.Register(serv.Server)
 	})
-	return &serv
+	return serv
 }
 
 func (s Service) Run() {

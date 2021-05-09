@@ -22,7 +22,7 @@ func (rp TaskRepository) FindTasks(ctx context.Context, userID sql.NullString, c
 
 	var rows *sql.Rows
 	var err error
-	stmt := `SELECT id, content, user_id, created_date FROM tasks WHERE user_id = $1 AND created_date = $2`
+	stmt := `SELECT id, content, user_id, created_date FROM tasks WHERE user_id = $1 AND DATE(created_date) = $2`
 	if createdDate.IsZero() {
 		stmt = `SELECT id, content, user_id, created_date FROM tasks WHERE user_id = $1`
 		rows, err = rp.dbConfig.Database.QueryContext(ctx, stmt, userID)
@@ -67,6 +67,8 @@ func (rp TaskRepository) CreateTask(ctx context.Context, t *task.Task) error {
 func (rp TaskRepository) ValidateTask(ctx context.Context, userID string, now time.Time) (bool, int) {
 	stmt := `SELECT count(id) FROM tasks WHERE user_id = $1 AND created_date = $2`
 	row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID, now.Format("2006-01-02"))
+	// stmt := `SELECT count(id) FROM tasks WHERE user_id = $1`
+	// row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID)
 	limitTask := 0
 	err := row.Scan(&limitTask)
 	if err != nil {

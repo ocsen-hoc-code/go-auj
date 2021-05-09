@@ -24,8 +24,8 @@ const USERID = "e52e46ad-c655-4011-871c-dce601a986de"
 const USERNAME = "firstUser"
 const PASSWORD = "example"
 
-func InstallTest() service.Service {
-	serv := service.Service{
+func InstallTest() *service.Service {
+	serv := &service.Service{
 		Server:    gin.Default(),
 		SecretKey: config.NewJWTConfig(&config.JWTConfig{SecretKey: "Minh dep trai", ExpireTime: 900}),
 		Config:    config.NewDbConfig(&config.DbConfig{TestEnv: true})}

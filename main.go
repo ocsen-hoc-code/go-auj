@@ -12,7 +12,7 @@ import (
 	"github.com/ocsen-hoc-code/go-auj/models/service"
 )
 
-func SetupServer(serv service.Service) service.Service {
+func SetupServer(serv *service.Service) *service.Service {
 	service.NewService(serv)
 	container := builder.BuildContainer()
 	container.Invoke(func(serv *service.Service) {})
@@ -33,7 +33,7 @@ func main() {
 		expireTime = 900
 	}
 	serv := SetupServer(
-		service.Service{
+		&service.Service{
 			Server:    gin.Default(),
 			Port:      8888,
 			SecretKey: config.NewJWTConfig(&config.JWTConfig{SecretKey: "Minh dep trai", ExpireTime: expireTime}),
