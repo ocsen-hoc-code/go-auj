@@ -26,7 +26,6 @@ func (serv TaskService) AddTask(ctx context.Context, t *task.Task) (*task.Task, 
 	now := time.Now()
 	t.ID = uuid.New().String()
 	t.CreatedDate = now
-	// t.CreatedDate = now.Format("2006-01-02")
 	isLimitTask, maxToDo := serv.reps.ValidateTask(ctx, t.UserID, now)
 	if isLimitTask {
 		return t, errors.New("Users are limited to create only " + strconv.Itoa(maxToDo) + " task only per day!")

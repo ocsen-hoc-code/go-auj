@@ -68,8 +68,7 @@ func (rp TaskRepository) CreateTask(ctx context.Context, t *task.Task) error {
 func (rp TaskRepository) ValidateTask(ctx context.Context, userID string, createdDate time.Time) (bool, int) {
 	stmt := `SELECT count(id) FROM tasks WHERE user_id = $1 AND created_date > $2`
 	row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID, createdDate.AddDate(0, 0, -1).Format("2006-01-02"))
-	// stmt := `SELECT count(id) FROM tasks WHERE user_id = $1`
-	// row := rp.dbConfig.Database.QueryRowContext(ctx, stmt, userID)
+
 	limitTask := 0
 	err := row.Scan(&limitTask)
 	if err != nil {
