@@ -3,6 +3,7 @@ package config
 import (
 	"database/sql"
 	"fmt"
+	"os"
 	"sync"
 
 	_ "github.com/lib/pq"
@@ -80,7 +81,8 @@ func NewDbConfig(db *DbConfig) *DbConfig {
 		err = sqlDB.Ping()
 
 		if err != nil {
-			panic(err)
+			fmt.Println("Error: Can't connect database!")
+			os.Exit(0)
 		}
 
 		dbConfig = db
